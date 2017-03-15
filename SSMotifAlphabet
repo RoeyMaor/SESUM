@@ -1,0 +1,8 @@
+ALPHABET "RNA with pairing information" RNA-LIKE
+A ~ U
+C ~ G
+B ~ V
+D ~ H
+W = ACGUBDHV
+
+
