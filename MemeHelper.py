@@ -7,7 +7,7 @@ MAX_E_VALUE=0.001 #maximum e-value to be considered as a motif
 MAX_NUMBER_OF_MOTIFS=3
 MAXSIZE = 300000
 MEME_TEXT_OUTPUT=False
-THRESHOLD_TO_CONSIDER_TWO_MOTIFS_TO_BE_ON_THE_SAME_SUBSTRCTURE = 0.8
+THRESHOLD_TO_CONSIDER_TWO_MOTIFS_TO_BE_ON_THE_SAME_SUBSTRCTURE = 0.4
 
 map_from_motif_index_to_substructures = {} # motif_index -> [(sequenceIndex,(loopKind,loopIndex),start_index)]
 map_from_substructure_to_motifs = {} # (sequenceIndex,(loopKind,loopIndex)) -> [(motif_index,start_index)]
@@ -42,7 +42,7 @@ def get_Meme_Result_From_File(fastaFile, fastaFile_path, numberOfCores):
     numberOfLines = getLineCountOfFile(fastaFile)
     command = "/home/roym/meme/bin/meme"
     commandArgs = "-p "+str(numberOfCores)+" -alph "+NAME_OF_ALPHABET_FILE+" -nostatus"+" -evt "+str(MAX_E_VALUE)
-    commandArgs += " -minsites "+str((numberOfLines/10))+" -nmotifs "+str(MAX_NUMBER_OF_MOTIFS) + " -wg 1"
+    commandArgs += " -minsites "+str((numberOfLines/10))+" -nmotifs "+str(MAX_NUMBER_OF_MOTIFS) + " -wg 0"
     commandArgs += " -maxsize "+str(MAXSIZE)+(" -text" if MEME_TEXT_OUTPUT else "")+" "+fastaFile_path
     res = execute_command_and_get_output(command, commandArgs, "")
 
@@ -127,10 +127,6 @@ def fill_maps(meme_result, flattened_sequences_substructures):
             if tupple[0]<tupple[1]:
                 continue
             map_from_motif_index_tupples_to_number_of_joint_appearences[tupple]+=1
-    print(map_from_motif_index_to_substructures[2])
-    print(map_from_motif_index_to_substructures)
-    print(map_from_substructure_to_motifs)
-    print(map_from_motif_index_tupples_to_number_of_joint_appearences)
 
 def avg_distance_between_motifs_on_the_same_substrcture(ungappedMotif1,ungappedMotif2):
     '''

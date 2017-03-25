@@ -57,8 +57,6 @@ if __name__ == "__main__":
     end = time.time()
     print("Time it took to get meme results: " + str(end - start) + " seconds")
 
-    print("Found "+str(len(meme_result.motifs))+" motifs.")
-
     start = time.clock()
     sequences_substructures = [get_classified_lists_for_all_variants_of_structures_from_sequence(sequence) for sequence in sequencesList]
     flattened_sequences_substructures = [structure for structures in sequences_substructures for structure in structures]
@@ -66,11 +64,16 @@ if __name__ == "__main__":
     print("Time it took to create detailed structure information: " + str(end - start) + " seconds")
     assert(len(flattened_sequences_substructures)==len(new_alphabet_sequences))
     new_alphabet_file.close()
-    print_meme_result(meme_result)
+    start = time.clock()
     fill_maps(meme_result,flattened_sequences_substructures)
+    end = time.clock()
+    print("Time it took to extract gapped motif information: "+str(end-start) + " seconds")
+    print("\n")
+    print("Found "+str(len(meme_result.motifs))+" ungapped sequence-strctural motifs.")
+    for (m1,m2) in map_from_motif_index_tupples_to_number_of_joint_appearences:
+        if m1==m2:
+            continue
+        value = map_from_motif_index_tupples_to_number_of_joint_appearences[(m1,m2)]
+        if value > THRESHOLD_TO_CONSIDER_TWO_MOTIFS_TO_BE_ON_THE_SAME_SUBSTRCTURE*len(new_alphabet_sequences):
+            print("Motifs "+str(m1)+" and "+str(m2)+" are part of the same gapped sequence-strctural motif - on the same loop")
 
-
-    '''
-    from the selex essay:
-    In each experiment we generated all suboptimal structures within a region of 3 kcal/mol from the MFE structure and performed 50 iterations of substructure ensemble alignments, choosing 5 ensembles in each round. The maximal length difference between substructure components was set to G=2.
-    '''

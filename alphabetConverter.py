@@ -2,7 +2,7 @@ import sys
 import multiprocessing
 from SSMotifFinderUtils import *
 
-MAXIMUM_FREE_ENERGY_GAP_TO_MFE = 0 #in kcal/mol
+MAXIMUM_FREE_ENERGY_GAP_TO_MFE = 0.1 #in kcal/mol
 NUMBER_OF_SEQUENCES_THRESHOLD_TO_USE_PARALLEL = 20
 
 alphabet_pairing_dictionary = {
